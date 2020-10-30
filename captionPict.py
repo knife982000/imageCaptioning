@@ -1,6 +1,7 @@
 import argparse
 from showAndTell import GRUAttention
-from tensorflow.keras.models import load_model
+from tensorflow.keras.layers import Input, Dense, Embedding
+from tensorflow.keras.models import Model
 import pickle
 import math
 import numpy as np
@@ -84,7 +85,23 @@ if __name__ == '__main__':
     with open(args.tokenizer, 'rb') as f:
         tokenizer = pickle.load(f)
     tf.keras.backend.clear_session()
-    model = load_model(args.model, custom_objects={'GRUAttention': GRUAttention})
+
+    img = Input((64, 2048))
+    d_img = Dense(300)(img)
+
+    txt = Input((None, ))
+    emb = Embedding(len(tokenizer.word_index), 300)(txt)
+
+    d = GRUAttention(300, mask_zeros=True, return_sequences=True)([d_img, emb])
+    d = Dense(len(tokenizer.word_index), activation='softmax')(d)
+
+    model = Model([img, txt], d)
+
+    model.summary()
+    model.compile(loss='sparse_categorical_crossentropy', optimizer='nadam', metrics=['sparse_categorical_accuracy'])
+
+    model.load_weights(args.model)
+
     for path, p in zip(args.pics, pict):
         print('*' * 80)
         print(path)
