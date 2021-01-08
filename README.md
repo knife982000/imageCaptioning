@@ -18,7 +18,7 @@ python captionPict.py -m model.h5 -p pict1.jpg pict2.jpg ... pictN.jpg
 ```
 ## Pretrained model
 
-A pre-trained model is abailable at [this link](https://mega.nz/file/M5Z0ADgR#468oecjFSxN1fc875vt5KLDqmzI8dNtecTPuW72A4Nc). 
+A pre-trained model is available at [this link](https://mega.nz/file/M5Z0ADgR#468oecjFSxN1fc875vt5KLDqmzI8dNtecTPuW72A4Nc). 
 
 ## Examples
 
